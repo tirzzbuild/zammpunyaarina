@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ZAMM</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #d4d6dc;
+  --card: #ffffff;
+  --text: #1c1f26;
+  --text-dim: #5a5f6b;
+  --text-soft: #8a8f9c;
+  --pink: #ff7f9e;
+  --pink-dark: #ff5577;
+  --pink-bg: #fff0f4;
+  --line: #ebebef;
+  --green: #22c55e;
+  --red: #ef4444;
+  --blue: #3a55e0;
+  --yellow: #f59e0b;
+  --radius: 22px;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body { padding-bottom: 120px; }
+
+.app {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px 20px;
+}
+
+.header-left { display: flex; align-items: center; gap: 16px; }
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  transition: opacity 0.15s;
+}
+
+.icon-btn:active { opacity: 0.5; }
+.icon-btn svg { width: 24px; height: 24px; stroke: var(--text); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.brand {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+
+.header-right { display: flex; gap: 8px; }
+
+.hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: #0a0a0c;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.25) 100%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: absolute;
+  top: 20px;
+  left: 22px;
+  right: 22px;
+  z-index: 2;
+}
+
+.welcome-back {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+}
+
+.hero-name {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 26px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+  margin-bottom: 18px;
+}
+
+.status-card {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 260px;
+}
+
+.status-label {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.status-ping {
+  font-size: 10px;
+  color: #7cffa8;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-ping .live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7cffa8;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.status-row svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  stroke: var(--pink);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.section-title {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--text);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.section-text {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+}
+
+.section-text b { color: var(--text); font-weight: 700; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--pink);
+}
+
+.stat-card.green::before { background: var(--green); }
+.stat-card.blue::before  { background: var(--blue); }
+.stat-card.yellow::before { background: var(--yellow); }
+
+.stat-label {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.stat-sub {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+
+.section { margin-bottom: 28px; }
+
+.bottom-nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 460px;
+  background: #ffffff;
+  border-radius: 32px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  padding: 10px 8px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+}
+
+.nav-btn {
+  flex: 1;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  transition: background 0.15s;
+}
+
+.nav-btn:active { background: #f5f5f7; }
+
+.nav-btn svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--text);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.15s;
+}
+
+.nav-btn.active svg { stroke: var(--pink); stroke-width: 2.6; }
+
+.page {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 1000;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.page.show { transform: translateY(0); }
+
+.page-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  flex-shrink: 0;
+  padding-top: max(16px, env(safe-area-inset-top));
+}
+
+.page-title {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-title svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--pink);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.page-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  transition: background 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.page-close:active { background: #f0f0f3; }
+.page-close svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none; stroke-linecap: round; }
+
+.page-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-body::-webkit-scrollbar { width: 4px; }
+.page-body::-webkit-scrollbar-thumb { background: #b0b4bc; border-radius: 2px; }
+
+.payload-preview {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  position: relative;
+  background: #0a0a0c;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.payload-preview-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.payload-preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, transparent 55%, rgba(0,0,0,0.55) 100%);
+  pointer-events: none;
+}
+
+.payload-preview-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-transform: uppercase;
+  z-index: 2;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+
+.payload-preview-badge .dot-live {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 10px var(--pink);
+}
+
+.payload-preview-play {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.08);
+  z-index: 2;
+}
+
+.payload-preview-play svg {
+  width: 14px;
+  height: 14px;
+  fill: #2a2a30;
+  margin-left: 2px;
+}
+
+.bug-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.bug-tab {
+  flex: 1;
+  padding: 14px 10px;
+  background: #ffffff;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+
+.bug-tab svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bug-tab.active {
+  background: var(--pink-bg);
+  border-color: var(--pink);
+  color: var(--pink-dark);
+}
+
+.field-block {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.field-block-label {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--pink-dark);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field-block-label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 14px;
+  background: var(--pink);
+  border-radius: 2px;
+}
+
+.field-validity {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.field-validity .vdot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d0d0d5;
+}
+
+.field-validity.valid { color: var(--green); }
+.field-validity.valid .vdot { background: var(--green); }
+
+.field-validity.invalid { color: var(--red); }
+.field-validity.invalid .vdot { background: var(--red); }
+
+.target-input-wrap {
+  background: #fafafc;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 12px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.target-input-wrap:focus-within { border-color: var(--pink); background: #ffffff; }
+
+.target-input-wrap svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--pink);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.target-input {
+  flex: 1;
+  padding: 14px 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.target-input::placeholder { color: #b8bcc6; font-weight: 500; }
+
+.payload-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-left: 10px;
+  position: relative;
+}
+
+.payload-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 14px;
+  background: var(--pink);
+  border-radius: 2px;
+}
+
+.payload-header-title {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--pink-dark);
+  text-transform: uppercase;
+}
+
+.payload-header-count {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-soft);
+  letter-spacing: 1px;
+}
+
+.payload-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 12px;
+  scroll-snap-type: x mandatory;
+  margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.payload-scroll::-webkit-scrollbar { height: 0; }
+
+.payload-card {
+  flex: 0 0 140px;
+  aspect-ratio: 1 / 1.15;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 2px solid transparent;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s, border-color 0.15s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  scroll-snap-align: start;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.payload-card:active { transform: scale(0.96); }
+
+.payload-card.active {
+  background: var(--pink-bg);
+  border-color: var(--pink);
+  box-shadow: 0 6px 20px rgba(255,127,158,0.25);
+}
+
+.payload-card .num {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-soft);
+  letter-spacing: 1px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payload-card.active .num { color: var(--pink-dark); }
+
+.payload-card .num-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d0d0d5;
+}
+
+.payload-card.active .num-dot {
+  background: var(--pink);
+}
+
+.payload-card .name {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.35;
+  letter-spacing: 0.3px;
+  margin: 8px 0;
+}
+
+.payload-card.active .name { color: var(--pink-dark); }
+
+.payload-card .name .x {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: currentColor;
+  position: relative;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.payload-card .name .x::before,
+.payload-card .name .x::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 1px;
+}
+
+.payload-card .name .x::before { transform: translate(-50%, -50%) rotate(45deg); }
+.payload-card .name .x::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+
+.payload-card.active .name .x::before,
+.payload-card.active .name .x::after { background: var(--pink-bg); }
+
+.payload-card .status {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-soft);
+  padding: 5px 8px;
+  background: #f5f5f7;
+  border-radius: 6px;
+  text-align: center;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.payload-card.active .status {
+  background: var(--pink);
+  color: #ffffff;
+}
+
+.payload-card .status .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.run-btn {
+  width: 100%;
+  padding: 18px;
+  background: var(--pink);
+  border: none;
+  border-radius: 14px;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.15s, background 0.15s;
+  box-shadow: 0 6px 20px rgba(255, 127, 158, 0.4);
+  text-transform: uppercase;
+}
+
+.run-btn:active:not(:disabled) { transform: scale(0.98); }
+.run-btn:disabled { background: #b0b4bc; color: #e8e8ec; box-shadow: none; cursor: not-allowed; }
+.run-btn.running { background: var(--red); }
+
+.run-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.history-item {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 4px solid var(--green);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.history-item.fail { border-left-color: var(--red); }
+
+.history-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e8fbe8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.history-item.fail .history-icon { background: #ffe0e0; }
+
+.history-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--green);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.history-item.fail .history-icon svg { stroke: var(--red); }
+
+.history-info { flex: 1; min-width: 0; }
+
+.history-name {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 3px;
+  letter-spacing: 0.3px;
+}
+
+.history-target {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+  letter-spacing: 0.3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-time {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-soft);
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-state svg {
+  width: 64px;
+  height: 64px;
+  stroke: var(--text-soft);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+
+.empty-state-text {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-soft);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.tool-item {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: transform 0.15s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.tool-item:active { transform: scale(0.98); }
+
+.tool-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--pink-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tool-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--pink-dark);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tool-info { flex: 1; min-width: 0; }
+
+.tool-name {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+.tool-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.tool-arrow {
+  flex-shrink: 0;
+  color: var(--text-soft);
+}
+
+.tool-arrow svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s;
+}
+
+.tool-item.open .tool-arrow svg { transform: rotate(90deg); }
+
+.tool-panel {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  margin-top: -8px;
+  display: none;
+  border: 2px solid var(--pink);
+  border-top: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.tool-panel.show { display: block; }
+
+.tool-panel-title {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--pink-dark);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.tool-panel textarea,
+.tool-panel input[type="text"],
+.tool-panel input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+  background: #fafafc;
+  margin-bottom: 10px;
+  resize: vertical;
+  min-height: 44px;
+}
+
+.tool-panel textarea:focus,
+.tool-panel input:focus { border-color: var(--pink); background: #ffffff; }
+
+.tool-action {
+  width: 100%;
+  padding: 12px;
+  background: var(--pink);
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.15s;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.tool-action:active { transform: scale(0.98); }
+
+.tool-action.alt {
+  background: #ffffff;
+  color: var(--pink-dark);
+  border: 2px solid var(--pink);
+}
+
+.tool-output {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  background: #fafafc;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 44px;
+  line-height: 1.6;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.result-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.result-modal.show { opacity: 1; pointer-events: auto; }
+
+.result-card {
+  width: 100%;
+  max-width: 340px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px 24px 28px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.result-modal.show .result-card { transform: scale(1); }
+
+.result-icon {
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8fbe8, #c8f0c8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(34,197,94,0.3);
+}
+
+.result-icon.error {
+  background: linear-gradient(135deg, #ffe0e0, #ffc0c0);
+  box-shadow: 0 8px 24px rgba(239,68,68,0.3);
+}
+
+.result-icon svg {
+  width: 44px;
+  height: 44px;
+  stroke: var(--green);
+  stroke-width: 3.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.result-icon.error svg { stroke: var(--red); }
+
+.result-line-1 {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.result-line-2 {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.result-line-3 {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.countdown-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--pink-bg);
+  border: 2px solid var(--pink);
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--pink-dark);
+  letter-spacing: 1px;
+}
+
+.countdown-num {
+  display: inline-block;
+  min-width: 26px;
+  text-align: center;
+  font-size: 22px;
+  color: var(--pink);
+}
+
+.toast {
+  position: fixed;
+  bottom: 110px;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  background: rgba(28, 31, 38, 0.94);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  max-width: calc(100% - 48px);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast .t-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pink);
+  flex-shrink: 0;
+}
+
+.settings-row {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings-label {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.settings-sub {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-top: 3px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.settings-btn {
+  padding: 8px 14px;
+  background: var(--pink-bg);
+  border: none;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--pink-dark);
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+
+.settings-btn:active { transform: scale(0.95); }
+.settings-btn.danger { background: #ffe0e0; color: var(--red); }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <div class="header-left">
+      <button class="icon-btn" aria-label="Menu">
+        <svg viewBox="0 0 24 24">
+          <line x1="3" y1="7"  x2="21" y2="7"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="17" x2="21" y2="17"/>
+        </svg>
+      </button>
+      <div class="brand">ZAMM VERSE</div>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" aria-label="Support">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 14 v-2 a8 8 0 0 1 16 0 v2"/>
+          <rect x="3" y="13" width="4" height="6" rx="1.5"/>
+          <rect x="17" y="13" width="4" height="6" rx="1.5"/>
+          <path d="M20 19 a4 4 0 0 1 -4 3 h-2"/>
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Account">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4.5"/>
+          <path d="M4 21 c0 -4.5 3.6 -7 8 -7 s8 2.5 8 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <img class="hero-img" src="https://files.catbox.moe/2f2zl5.jpg" alt="">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="welcome-back">Welcome Back,</div>
+      <div class="hero-name" id="heroName">Hai, Zamm</div>
+
+      <div class="status-card">
+        <div class="status-label">
+          <span>Status Account</span>
+          <span class="status-ping"><span class="live-dot"></span><span id="pingMs">12ms</span></span>
+        </div>
+        <div class="status-row">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2 L4 6 V12 C4 17 7 20.5 12 22 C17 20.5 20 17 20 12 V6 Z"/>
+          </svg>
+          <span>Role: Developer</span>
+        </div>
+        <div class="status-row">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 7 V12 L15 14"/>
+          </svg>
+          <span>Expired: 99999-99-99</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Dashboard</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Bug</div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sub">TERKIRIM</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Success</div>
+        <div class="stat-value" id="statSuccess">0</div>
+        <div class="stat-sub">BERHASIL</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-label">Payloads</div>
+        <div class="stat-value">13</div>
+        <div class="stat-sub">TERSEDIA</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-label">Status</div>
+        <div class="stat-value" style="font-size:18px;color:var(--green)">ONLINE</div>
+        <div class="stat-sub">ALL SYSTEMS</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Community Hub</div>
+    <p class="section-text">
+      Stay connected with the <b>ZAMM VERSE</b> community. Get real-time updates, access exclusive payloads, and participate in discussions with other members.
+    </p>
+  </div>
+
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="navHome" aria-label="Home">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 11 L12 3 L21 11 L21 20 L15 20 L15 14 L9 14 L9 20 L3 20 Z"/>
+    </svg>
+  </button>
+  <button class="nav-btn" id="navBug" aria-label="Bug WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12 a9 9 0 0 1 -13 8 L3 21 L4 16 a9 9 0 1 1 17 -4 Z"/>
+    </svg>
+  </button>
+  <button class="nav-btn" id="navHistory" aria-label="History">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 7 V12 L15 14"/>
+    </svg>
+  </button>
+  <button class="nav-btn" id="navTools" aria-label="Tools">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 6 a3 3 0 0 0 -3.5 4 L3 17.5 L6.5 21 L14 13.5 A3 3 0 0 0 18 10 L15 13 L11 9 L14 6 Z"/>
+    </svg>
+  </button>
+  <button class="nav-btn" id="navProfile" aria-label="Profile">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 21 c0 -4 3.6 -7 8 -7 s8 3 8 7"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page" id="bugPage">
+  <div class="page-header">
+    <div class="page-title">
+      <svg viewBox="0 0 24 24">
+        <path d="M21 12 a9 9 0 0 1 -13 8 L3 21 L4 16 a9 9 0 1 1 17 -4 Z"/>
+      </svg>
+      BUG WHATSAPP
+    </div>
+    <button class="page-close" data-close="bugPage" aria-label="Close">
+      <svg viewBox="0 0 24 24">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="18" y1="6" x2="6" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="page-body">
+    <div class="payload-preview">
+      <img class="payload-preview-img" src="https://files.catbox.moe/2f2zl5.jpg" alt="">
+      <div class="payload-preview-overlay"></div>
+      <div class="payload-preview-badge">
+        <div class="dot-live"></div>
+        PAYLOAD PREVIEW
+      </div>
+      <div class="payload-preview-play">
+        <svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z"/></svg>
+      </div>
+    </div>
+
+    <div class="bug-tabs">
+      <button class="bug-tab active" data-mode="number">
+        <svg viewBox="0 0 24 24">
+          <rect x="7" y="2" width="10" height="20" rx="2.5"/>
+          <line x1="11" y1="18" x2="13" y2="18"/>
+        </svg>
+        Bug Nomor
+      </button>
+      <button class="bug-tab" data-mode="group">
+        <svg viewBox="0 0 24 24">
+          <circle cx="9" cy="8" r="3"/>
+          <circle cx="17" cy="9" r="2.5"/>
+          <path d="M3 18 c0 -3 2.5 -5 6 -5 s6 2 6 5"/>
+          <path d="M15 14 c3 0 5 1.5 5 4"/>
+        </svg>
+        Bug Group
+      </button>
+    </div>
+
+    <div class="field-block">
+      <div class="field-block-label">
+        <span id="targetLabel">Target Number</span>
+        <span class="field-validity" id="targetValidity">
+          <span class="vdot"></span>
+          <span id="validityText">WAITING</span>
+        </span>
+      </div>
+      <div class="target-input-wrap">
+        <svg id="targetIcon" viewBox="0 0 24 24">
+          <rect x="7" y="2" width="10" height="20" rx="2.5"/>
+          <line x1="11" y1="18" x2="13" y2="18"/>
+        </svg>
+        <input type="tel" class="target-input" id="targetInput" placeholder="+628xxxxxxxxxx" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="payload-header">
+      <div class="payload-header-title">Select Payload</div>
+      <div class="payload-header-count" id="payloadCount">04 / 13</div>
+    </div>
+
+    <div class="payload-scroll" id="payloadScroll">
+      <div class="payload-card" data-id="blank-andro" data-name="BLANK ANDRO">
+        <div class="num"><span>01</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>BLANK ANDRO</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="invisible-fc-adro" data-name="INVISIBLE FC ADRO">
+        <div class="num"><span>02</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>INVISIBLE FC ADRO</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="invisible-ios" data-name="INVISIBLE IOS">
+        <div class="num"><span>03</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>INVISIBLE IOS</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card active" data-id="freeze-hang" data-name="FREEZE HANG">
+        <div class="num"><span>04</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>FREEZE HANG</div>
+        <div class="status"><span class="dot"></span>Armed</div>
+      </div>
+      <div class="payload-card" data-id="invisible-group" data-name="INVISIBLE GRP">
+        <div class="num"><span>05</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>INVISIBLE GRP</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="virus-x" data-name="VIRUS X">
+        <div class="num"><span>06</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>VIRUS X</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="blank-chat" data-name="BLANK CHAT">
+        <div class="num"><span>07</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>BLANK CHAT</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="delay-msg" data-name="DELAY MSG">
+        <div class="num"><span>08</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>DELAY MSG</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="force-close" data-name="FORCE CLOSE">
+        <div class="num"><span>09</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>FORCE CLOSE</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="heavy-lag" data-name="HEAVY LAG">
+        <div class="num"><span>10</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>HEAVY LAG</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="infinite-load" data-name="INFINITE LOAD">
+        <div class="num"><span>11</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>INFINITE LOAD</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="blank-profile" data-name="BLANK PROFILE">
+        <div class="num"><span>12</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>BLANK PROFILE</div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+      <div class="payload-card" data-id="BAN GB " data-name="BAN GB 100% WORK">
+        <div class="num"><span>13</span><span class="num-dot"></span></div>
+        <div class="name"><span class="x"></span>BAN GB </div>
+        <div class="status"><span class="dot"></span>Standby</div>
+      </div>
+    </div>
+
+    <button class="run-btn" id="runBtn" disabled>
+      <svg viewBox="0 0 24 24">
+        <path d="M22 2 L11 13 M22 2 L15 22 L11 13 L2 9 Z"/>
+      </svg>
+      <span id="runLabel">JALANKAN</span>
+    </button>
+  </div>
+</div>
+
+<div class="page" id="historyPage">
+  <div class="page-header">
+    <div class="page-title">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7 V12 L15 14"/>
+      </svg>
+      RIWAYAT
+    </div>
+    <button class="page-close" data-close="historyPage" aria-label="Close">
+      <svg viewBox="0 0 24 24">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="18" y1="6" x2="6" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="page-body">
+    <div class="stats-grid" style="margin-bottom:20px">
+      <div class="stat-card">
+        <div class="stat-label">Total</div>
+        <div class="stat-value" id="histTotal">0</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Success</div>
+        <div class="stat-value" id="histSuccess">0</div>
+      </div>
+    </div>
+    <div id="historyList"></div>
+  </div>
+</div>
+
+<div class="page" id="toolsPage">
+  <div class="page-header">
+    <div class="page-title">
+      <svg viewBox="0 0 24 24">
+        <path d="M14 6 a3 3 0 0 0 -3.5 4 L3 17.5 L6.5 21 L14 13.5 A3 3 0 0 0 18 10 L15 13 L11 9 L14 6 Z"/>
+      </svg>
+      TOOLS
+    </div>
+    <button class="page-close" data-close="toolsPage" aria-label="Close">
+      <svg viewBox="0 0 24 24">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="18" y1="6" x2="6" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="page-body">
+
+    <button class="tool-item" data-tool="checker">
+      <div class="tool-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="16" y1="16" x2="21" y2="21"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Cek Nomor</div>
+        <div class="tool-desc">Validasi format nomor HP Indonesia</div>
+      </div>
+      <div class="tool-arrow">
+        <svg viewBox="0 0 24 24"><path d="M9 6 L15 12 L9 18"/></svg>
+      </div>
+    </button>
+    <div class="tool-panel" id="panel-checker">
+      <div class="tool-panel-title">Cek Nomor HP</div>
+      <input type="text" id="tool-checker-input" placeholder="+628xxxxxxxxxx">
+      <button class="tool-action" data-action="checker-run">CEK</button>
+      <div class="tool-output" id="tool-checker-out">—</div>
+    </div>
+
+    <button class="tool-item" data-tool="generator">
+      <div class="tool-icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="7" y="2" width="10" height="20" rx="2.5"/>
+          <line x1="11" y1="18" x2="13" y2="18"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Generator Nomor</div>
+        <div class="tool-desc">Generate nomor HP random</div>
+      </div>
+      <div class="tool-arrow">
+        <svg viewBox="0 0 24 24"><path d="M9 6 L15 12 L9 18"/></svg>
+      </div>
+    </button>
+    <div class="tool-panel" id="panel-generator">
+      <div class="tool-panel-title">Generator</div>
+      <input type="number" id="tool-gen-count" placeholder="Jumlah (1-20)" value="5" min="1" max="20">
+      <button class="tool-action" data-action="generator-run">GENERATE</button>
+      <div class="tool-output" id="tool-generator-out">—</div>
+    </div>
+
+    <button class="tool-item" data-tool="hash">
+      <div class="tool-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 8 H20"/>
+          <path d="M4 16 H20"/>
+          <path d="M10 4 L8 20"/>
+          <path d="M16 4 L14 20"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Hash</div>
+        <div class="tool-desc">Generate hash dari teks</div>
+      </div>
+      <div class="tool-arrow">
+        <svg viewBox="0 0 24 24"><path d="M9 6 L15 12 L9 18"/></svg>
+      </div>
+    </button>
+    <div class="tool-panel" id="panel-hash">
+      <div class="tool-panel-title">Hash Generator</div>
+      <input type="text" id="tool-hash-input" placeholder="Teks...">
+      <button class="tool-action" data-action="hash-run">HASH</button>
+      <div class="tool-output" id="tool-hash-out">—</div>
+    </div>
+
+    <button class="tool-item" data-tool="base64">
+      <div class="tool-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 6 H20 V18 H4 Z"/>
+          <path d="M8 12 H16"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Base64</div>
+        <div class="tool-desc">Encode / decode Base64</div>
+      </div>
+      <div class="tool-arrow">
+        <svg viewBox="0 0 24 24"><path d="M9 6 L15 12 L9 18"/></svg>
+      </div>
+    </button>
+    <div class="tool-panel" id="panel-base64">
+      <div class="tool-panel-title">Base64</div>
+      <input type="text" id="tool-b64-input" placeholder="Teks...">
+      <button class="tool-action" data-action="base64-encode">ENCODE</button>
+      <button class="tool-action alt" data-action="base64-decode">DECODE</button>
+      <div class="tool-output" id="tool-b64-out">—</div>
+    </div>
+
+    <button class="tool-item" data-tool="counter">
+      <div class="tool-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7 V12 L15 14"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Spam Counter</div>
+        <div class="tool-desc">Hitung dan kirim burst</div>
+      </div>
+      <div class="tool-arrow">
+        <svg viewBox="0 0 24 24"><path d="M9 6 L15 12 L9 18"/></svg>
+      </div>
+    </button>
+    <div class="tool-panel" id="panel-counter">
+      <div class="tool-panel-title">Spam Counter</div>
+      <input type="number" id="tool-count-target" placeholder="Jumlah (1-999)" value="10" min="1" max="999">
+      <button class="tool-action" data-action="counter-run">HITUNG</button>
+      <div class="tool-output" id="tool-counter-out">—</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="page" id="profilePage">
+  <div class="page-header">
+    <div class="page-title">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 21 c0 -4 3.6 -7 8 -7 s8 3 8 7"/>
+      </svg>
+      PROFIL
+    </div>
+    <button class="page-close" data-close="profilePage" aria-label="Close">
+      <svg viewBox="0 0 24 24">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="18" y1="6" x2="6" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="page-body">
+
+    <div class="settings-row">
+      <div>
+        <div class="settings-label">Username</div>
+        <div class="settings-sub">Nama yang ditampilkan</div>
+      </div>
+      <button class="settings-btn" data-action="set-username">UBAH</button>
+    </div>
+
+    <div class="settings-row">
+      <div>
+        <div class="settings-label">Default Payload</div>
+        <div class="settings-sub" id="defaultPayloadName">FREEZE HANG</div>
+      </div>
+      <button class="settings-btn" data-action="reset-payload">RESET</button>
+    </div>
+
+    <div class="settings-row">
+      <div>
+        <div class="settings-label">Reset Riwayat</div>
+        <div class="settings-sub">Hapus semua log</div>
+      </div>
+      <button class="settings-btn danger" data-action="clear-history">HAPUS</button>
+    </div>
+
+    <div class="settings-row">
+      <div>
+        <div class="settings-label">Reset Total</div>
+        <div class="settings-sub">Kembalikan semua ke nol</div>
+      </div>
+      <button class="settings-btn danger" data-action="reset-all">RESET</button>
+    </div>
+
+    <div style="margin-top:32px;text-align:center">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--text-soft);text-transform:uppercase">Developer</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;letter-spacing:4px;color:var(--pink-dark);margin-top:6px">ANDRA</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1px;color:var(--text-soft);margin-top:6px">STRIDE ORYX v2.1</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="result-modal" id="resultModal">
+  <div class="result-card">
+    <div class="result-icon" id="resultIcon">
+      <svg id="resultIconSvg" viewBox="0 0 24 24">
+        <path d="M5 12 L10 17 L19 7"/>
+      </svg>
+    </div>
+    <div class="result-line-1" id="resultLine1">Bug</div>
+    <div class="result-line-2" id="resultLine2">FREEZE HANG</div>
+    <div class="result-line-3" id="resultLine3">Berhasil di kirim</div>
+    <div class="countdown-box">
+      <span>Dalam</span>
+      <span class="countdown-num" id="countdownNum">3</span>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span class="t-dot"></span>
+  <span id="toastText">Ready</span>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+const bugPage = $('bugPage');
+const historyPage = $('historyPage');
+const toolsPage = $('toolsPage');
+const profilePage = $('profilePage');
+
+const targetInput = $('targetInput');
+const targetLabel = $('targetLabel');
+const targetIcon = $('targetIcon');
+const targetValidity = $('targetValidity');
+const validityText = $('validityText');
+const payloadScroll = $('payloadScroll');
+const payloadCount = $('payloadCount');
+const runBtn = $('runBtn');
+const runLabel = $('runLabel');
+const resultModal = $('resultModal');
+const resultIcon = $('resultIcon');
+const resultIconSvg = $('resultIconSvg');
+const resultLine1 = $('resultLine1');
+const resultLine2 = $('resultLine2');
+const resultLine3 = $('resultLine3');
+const countdownNum = $('countdownNum');
+const toast = $('toast');
+const toastText = $('toastText');
+const pingMs = $('pingMs');
+
+const statTotal = $('statTotal');
+const statSuccess = $('statSuccess');
+const histTotal = $('histTotal');
+const histSuccess = $('histSuccess');
+const historyList = $('historyList');
+const defaultPayloadName = $('defaultPayloadName');
+const heroName = $('heroName');
+
+let bugMode = 'number';
+let payloadId = 'freeze-hang';
+let payloadName = 'FREEZE HANG';
+let running = false;
+let countdownTimer = null;
+let toastTimer = null;
+
+const STORAGE_KEYS = {
+  history: 'so_history',
+  total: 'so_total',
+  success: 'so_success',
+  lastPayload: 'so_last_payload',
+  username: 'so_username'
+};
+
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.history) || '[]'); }
+  catch (e) { return []; }
+}
+
+function saveHistory(h) {
+  localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(h.slice(0, 50)));
+}
+
+function addHistory(entry) {
+  const h = getHistory();
+  h.unshift(entry);
+  saveHistory(h);
+}
+
+function getNum(key) {
+  return parseInt(localStorage.getItem(key) || '0', 10);
+}
+
+function setNum(key, val) {
+  localStorage.setItem(key, String(val));
+}
+
+function refreshStats() {
+  const t = getNum(STORAGE_KEYS.total);
+  const s = getNum(STORAGE_KEYS.success);
+  statTotal.textContent = t;
+  statSuccess.textContent = s;
+  histTotal.textContent = t;
+  histSuccess.textContent = s;
+}
+
+function showToast(text) {
+  toastText.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+}
+
+function openPage(page) {
+  page.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePage(page) {
+  page.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.close;
+    closePage($(id));
+  });
+});
+
+$('navBug').addEventListener('click', () => openPage(bugPage));
+$('navHistory').addEventListener('click', () => { renderHistory(); openPage(historyPage); });
+$('navTools').addEventListener('click', () => openPage(toolsPage));
+$('navProfile').addEventListener('click', () => { refreshProfile(); openPage(profilePage); });
+
+setInterval(() => {
+  const ms = 8 + Math.floor(Math.random() * 22);
+  pingMs.textContent = ms + 'ms';
+}, 2200);
+
+document.querySelectorAll('.bug-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.bug-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    bugMode = tab.dataset.mode;
+
+    if (bugMode === 'number') {
+      targetLabel.textContent = 'Target Number';
+      targetInput.placeholder = '+628xxxxxxxxxx';
+      targetInput.type = 'tel';
+      targetIcon.innerHTML = '<rect x="7" y="2" width="10" height="20" rx="2.5"/><line x1="11" y1="18" x2="13" y2="18"/>';
+      showToast('Mode: Bug Nomor');
+    } else {
+      targetLabel.textContent = 'Target Group Link';
+      targetInput.placeholder = 'https://chat.whatsapp.com/xxxx';
+      targetInput.type = 'text';
+      targetIcon.innerHTML = '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 18 c0 -3 2.5 -5 6 -5 s6 2 6 5"/><path d="M15 14 c3 0 5 1.5 5 4"/>';
+      showToast('Mode: Bug Group');
+    }
+    targetInput.value = '';
+    updateValidityIndicator();
+    updateRunBtn();
+  });
+});
+
+payloadScroll.addEventListener('click', (e) => {
+  const card = e.target.closest('.payload-card');
+  if (!card || card.classList.contains('active')) return;
+
+  document.querySelectorAll('.payload-card').forEach(c => {
+    c.classList.remove('active');
+    const st = c.querySelector('.status');
+    if (st) st.innerHTML = '<span class="dot"></span>Standby';
+  });
+
+  card.classList.add('active');
+  const st = card.querySelector('.status');
+  if (st) st.innerHTML = '<span class="dot"></span>Armed';
+
+  payloadId = card.dataset.id;
+  payloadName = card.dataset.name;
+  localStorage.setItem(STORAGE_KEYS.lastPayload, payloadId);
+
+  const cards = Array.from(document.querySelectorAll('.payload-card'));
+  const index = cards.indexOf(card) + 1;
+  payloadCount.textContent = String(index).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0');
+
+  showToast('Payload: ' + payloadName);
+});
+
+targetInput.addEventListener('input', () => {
+  updateValidityIndicator();
+  updateRunBtn();
+});
+
+function isValidTarget() {
+  const val = targetInput.value.trim();
+  if (!val) return false;
+  if (bugMode === 'number') {
+    const digits = val.replace(/[^0-9]/g, '');
+    return digits.length >= 10 && digits.length <= 15;
+  }
+  return val.startsWith('http') && val.length > 10;
+}
+
+function updateValidityIndicator() {
+  const val = targetInput.value.trim();
+  targetValidity.classList.remove('valid', 'invalid');
+
+  if (!val) {
+    validityText.textContent = 'WAITING';
+    return;
+  }
+
+  if (isValidTarget()) {
+    targetValidity.classList.add('valid');
+    validityText.textContent = 'VALID';
+  } else {
+    targetValidity.classList.add('invalid');
+    validityText.textContent = 'INVALID';
+  }
+}
+
+function updateRunBtn() {
+  runBtn.disabled = !isValidTarget() || running;
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+function showResult(success, name) {
+  if (success) {
+    resultIcon.classList.remove('error');
+    resultIconSvg.innerHTML = '<path d="M5 12 L10 17 L19 7"/>';
+    resultLine1.textContent = 'Bug';
+    resultLine2.textContent = name;
+    resultLine3.textContent = 'Berhasil di kirim';
+  } else {
+    resultIcon.classList.add('error');
+    resultIconSvg.innerHTML = '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>';
+    resultLine1.textContent = 'Bug';
+    resultLine2.textContent = name;
+    resultLine3.textContent = 'Gagal di kirim';
+  }
+
+  let count = 3;
+  countdownNum.textContent = count;
+  resultModal.classList.add('show');
+
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(() => {
+    count--;
+    if (count <= 0) {
+      clearInterval(countdownTimer);
+      resultModal.classList.remove('show');
+    } else {
+      countdownNum.textContent = count;
+    }
+  }, 1000);
+}
+
+async function executeBug(target) {
+  await sleep(400);
+
+  try {
+    const res = await fetch('/api/bug-wa', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: bugMode, target, payload: payloadId })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return true;
+  } catch (e) {
+    return true;
+  }
+}
+
+runBtn.addEventListener('click', async () => {
+  if (running) return;
+  if (!isValidTarget()) return;
+
+  running = true;
+  runBtn.disabled = true;
+  runBtn.classList.add('running');
+  runLabel.textContent = 'RUNNING...';
+
+  const target = targetInput.value.trim();
+  const name = payloadName;
+  const success = await executeBug(target);
+
+  const total = getNum(STORAGE_KEYS.total) + 1;
+  const succ = getNum(STORAGE_KEYS.success) + (success ? 1 : 0);
+  setNum(STORAGE_KEYS.total, total);
+  setNum(STORAGE_KEYS.success, succ);
+
+  addHistory({
+    name: name,
+    target: target,
+    success: success,
+    time: Date.now()
+  });
+
+  refreshStats();
+  showResult(success, name);
+
+  running = false;
+  runBtn.classList.remove('running');
+  runLabel.textContent = 'JALANKAN';
+  targetInput.value = '';
+  updateValidityIndicator();
+  updateRunBtn();
+});
+
+function renderHistory() {
+  const h = getHistory();
+  historyList.innerHTML = '';
+
+  if (!h.length) {
+    historyList.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7 V12 L15 14"/>
+        </svg>
+        <div class="empty-state-text">Belum ada riwayat</div>
+      </div>
+    `;
+    return;
+  }
+
+  h.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'history-item' + (item.success ? '' : ' fail');
+    const time = new Date(item.time);
+    const timeStr = time.toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    const checkPath = item.success ? '<path d="M5 12 L10 17 L19 7"/>' : '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>';
+
+    div.innerHTML = `
+      <div class="history-icon">
+        <svg viewBox="0 0 24 24">${checkPath}</svg>
+      </div>
+      <div class="history-info">
+        <div class="history-name">${item.name}</div>
+        <div class="history-target">${item.target}</div>
+      </div>
+      <div class="history-time">${timeStr}</div>
+    `;
+    historyList.appendChild(div);
+  });
+}
+
+document.querySelectorAll('.tool-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const key = item.dataset.tool;
+    const panel = $('panel-' + key);
+    const isOpen = panel.classList.contains('show');
+
+    document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('show'));
+    document.querySelectorAll('.tool-item').forEach(i => i.classList.remove('open'));
+
+    if (!isOpen) {
+      panel.classList.add('show');
+      item.classList.add('open');
+    }
+  });
+});
+
+document.querySelectorAll('[data-action]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const action = btn.dataset.action;
+    handleToolAction(action);
+  });
+});
+
+function handleToolAction(action) {
+  if (action === 'checker-run') {
+    const v = $('tool-checker-input').value.trim();
+    const out = $('tool-checker-out');
+    if (!v) { out.textContent = 'Masukkan nomor dulu'; return; }
+    const digits = v.replace(/[^0-9]/g, '');
+    const valid = digits.length >= 10 && digits.length <= 15 && (v.startsWith('0') || v.startsWith('+') || v.startsWith('62') || v.startsWith('8'));
+    const carrier = detectCarrier(digits);
+    out.textContent = valid
+      ? 'VALID\nJumlah digit: ' + digits.length + '\nOperator: ' + carrier + '\nFormat: OK'
+      : 'INVALID\nJumlah digit: ' + digits.length + '\nFormat tidak sesuai';
+  }
+
+  if (action === 'generator-run') {
+    const count = Math.min(20, Math.max(1, parseInt($('tool-gen-count').value) || 5));
+    const lines = [];
+    for (let i = 0; i < count; i++) lines.push(generatePhoneNumber());
+    $('tool-generator-out').textContent = lines.join('\n');
+  }
+
+  if (action === 'hash-run') {
+    const v = $('tool-hash-input').value;
+    if (!v) { $('tool-hash-out').textContent = 'Masukkan teks dulu'; return; }
+    const hashes = simpleHash(v);
+    $('tool-hash-out').textContent = 'DJ2: ' + hashes.dj2 + '\nSDBM: ' + hashes.sdbm + '\nLEN: ' + v.length + ' chars';
+  }
+
+  if (action === 'base64-encode') {
+    const v = $('tool-b64-input').value;
+    try {
+      $('tool-b64-out').textContent = btoa(unescape(encodeURIComponent(v)));
+    } catch (e) {
+      $('tool-b64-out').textContent = 'Error encode';
+    }
+  }
+
+  if (action === 'base64-decode') {
+    const v = $('tool-b64-input').value;
+    try {
+      $('tool-b64-out').textContent = decodeURIComponent(escape(atob(v)));
+    } catch (e) {
+      $('tool-b64-out').textContent = 'Error decode';
+    }
+  }
+
+  if (action === 'counter-run') {
+    const n = Math.min(999, Math.max(1, parseInt($('tool-count-target').value) || 10));
+    let total = 0;
+    for (let i = 1; i <= n; i++) total += i;
+    $('tool-counter-out').textContent = 'Target: ' + n + '\nSum: ' + total + '\nBurst: ' + n + 'x';
+  }
+
+  if (action === 'set-username') {
+    const cur = localStorage.getItem(STORAGE_KEYS.username) || 'ANDRA';
+    const next = prompt('Username baru:', cur);
+    if (next && next.trim()) {
+      localStorage.setItem(STORAGE_KEYS.username, next.trim());
+      refreshProfile();
+      showToast('Username: ' + next.trim());
+    }
+  }
+
+  if (action === 'reset-payload') {
+    localStorage.removeItem(STORAGE_KEYS.lastPayload);
+    showToast('Default payload di-reset');
+    defaultPayloadName.textContent = 'FREEZE HANG';
+  }
+
+  if (action === 'clear-history') {
+    if (confirm('Hapus semua riwayat?')) {
+      localStorage.removeItem(STORAGE_KEYS.history);
+      renderHistory();
+      refreshStats();
+      showToast('Riwayat dihapus');
+    }
+  }
+
+  if (action === 'reset-all') {
+    if (confirm('Reset semua data?')) {
+      Object.values(STORAGE_KEYS).forEach(k => localStorage.removeItem(k));
+      refreshStats();
+      refreshProfile();
+      renderHistory();
+      showToast('Semua data di-reset');
+    }
+  }
+}
+
+function detectCarrier(digits) {
+  const d = digits.replace(/^62/, '0').replace(/^\+?62/, '0');
+  const prefix = d.slice(0, 4);
+  const map = {
+    '0811': 'Telkomsel', '0812': 'Telkomsel', '0813': 'Telkomsel', '0821': 'Telkomsel', '0822': 'Telkomsel', '0823': 'Telkomsel', '0851': 'Telkomsel', '0852': 'Telkomsel', '0853': 'Telkomsel',
+    '0814': 'Indosat', '0815': 'Indosat', '0816': 'Indosat', '0855': 'Indosat', '0856': 'Indosat', '0857': 'Indosat', '0858': 'Indosat',
+    '0817': 'XL', '0818': 'XL', '0819': 'XL', '0859': 'XL', '0877': 'XL', '0878': 'XL',
+    '0831': 'Axis', '0832': 'Axis', '0833': 'Axis', '0838': 'Axis',
+    '0895': 'Tri', '0896': 'Tri', '0897': 'Tri', '0898': 'Tri', '0899': 'Tri',
+    '0881': 'Smartfren', '0882': 'Smartfren', '0883': 'Smartfren', '0884': 'Smartfren', '0885': 'Smartfren', '0886': 'Smartfren', '0887': 'Smartfren', '0888': 'Smartfren', '0889': 'Smartfren'
+  };
+  return map[prefix] || 'Unknown';
+}
+
+function generatePhoneNumber() {
+  const prefixes = ['0811','0812','0813','0821','0822','0823','0851','0852','0853','0814','0815','0816','0855','0856','0857','0858','0817','0818','0819','0859','0877','0878','0831','0832','0833','0838','0895','0896','0897','0898','0899','0881','0882','0883','0884','0885','0886','0887','0888','0889'];
+  const p = prefixes[Math.floor(Math.random() * prefixes.length)];
+  let rest = '';
+  for (let i = 0; i < 8; i++) rest += Math.floor(Math.random() * 10);
+  return '+62' + p.slice(1) + rest;
+}
+
+function simpleHash(str) {
+  let dj2 = 5381;
+  let sdbm = 0;
+  for (let i = 0; i < str.length; i++) {
+    const c = str.charCodeAt(i);
+    dj2 = ((dj2 << 5) + dj2) + c;
+    sdbm = c + (sdbm << 6) + (sdbm << 16) - sdbm;
+  }
+  return {
+    dj2: (dj2 >>> 0).toString(16),
+    sdbm: (sdbm >>> 0).toString(16)
+  };
+}
+
+function refreshProfile() {
+  const uname = localStorage.getItem(STORAGE_KEYS.username) || 'ANDRA';
+  heroName.textContent = 'Hai, ' + uname;
+
+  const last = localStorage.getItem(STORAGE_KEYS.lastPayload);
+  if (last) {
+    const card = document.querySelector(`.payload-card[data-id="${last}"]`);
+    if (card) defaultPayloadName.textContent = card.dataset.name;
+  } else {
+    defaultPayloadName.textContent = 'FREEZE HANG';
+  }
+}
+
+function restoreLastPayload() {
+  const last = localStorage.getItem(STORAGE_KEYS.lastPayload);
+  if (!last) return;
+  const card = document.querySelector(`.payload-card[data-id="${last}"]`);
+  if (!card) return;
+
+  document.querySelectorAll('.payload-card').forEach(c => {
+    c.classList.remove('active');
+    const st = c.querySelector('.status');
+    if (st) st.innerHTML = '<span class="dot"></span>Standby';
+  });
+
+  card.classList.add('active');
+  const st = card.querySelector('.status');
+  if (st) st.innerHTML = '<span class="dot"></span>Armed';
+
+  payloadId = card.dataset.id;
+  payloadName = card.dataset.name;
+
+  const cards = Array.from(document.querySelectorAll('.payload-card'));
+  const index = cards.indexOf(card) + 1;
+  payloadCount.textContent = String(index).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0');
+}
+
+refreshStats();
+refreshProfile();
+restoreLastPayload();
+updateValidityIndicator();
+</script>
+
+</body>
+</html>
